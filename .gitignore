@@ -7,6 +7,7 @@ hello.iml
 .properties
 .mvn
 .cmd
+application.properties
 
 
 ### STS ###
