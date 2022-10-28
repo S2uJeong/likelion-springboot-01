@@ -1,29 +1,34 @@
 package com.springboot.likelion01.controller;
 
 import com.springboot.likelion01.domain.dto.MemberDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/get-api")
+@Slf4j
 public class GetController {
 
     // http://localhost:8081/api/v1/get-api/hello
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
     public String hello() {
+        log.info("hello로 요청이 들어왔습니다.");
         return "Hello World";
     }
 
     // http://localhost:8081/api/v1/get-api/name
     @GetMapping(value = "/name")
     public String getName() {
+        log.info("getName으로 요청이 들어왔습니다.");
         return "sujeong";
     }
 
     // http://localhost:8081/api/v1/get-api/variable1/{String 값}
     @GetMapping(value = "/variable1/{variable}")
-    public String getVariable(@PathVariable String variable) {
+    public String getVariable1(@PathVariable String variable) {
+        log.info("getVariable1으로 요청이 들어왔습니다. variable:{}", variable);
         return variable;
     }
 
