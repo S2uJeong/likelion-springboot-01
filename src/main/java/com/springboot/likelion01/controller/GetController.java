@@ -1,6 +1,8 @@
 package com.springboot.likelion01.controller;
 
 import com.springboot.likelion01.domain.dto.MemberDto;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,13 +41,13 @@ public class GetController {
     }
 
     // http://localhost:8081/api/v1/get-api/request1?name=sujeong&email=google&organization=likelion
-    // URI ? 뒤쪽에서 key:value 형식으로 받은 데이터를 변수(name, email,,)에 넣고 화면에 띄운다.
+    // URI의 key:value 형식으로 받은 데이터를 변수(name, email,,)에 넣고 화면에 띄운다.
+    @ApiOperation(value = "Get 메서드 예제", notes = "@RequestParam을 활용한 GET 메서드" )
     @GetMapping(value = "/request1")
     public String getRequestParam1(
-        @RequestParam String name,
-        @RequestParam String email,
-        @RequestParam String organization
-    ) {
+        @ApiParam(value = "이름", required = true) @RequestParam String name,
+        @ApiParam(value = "이메일", required = true) @RequestParam String email,
+        @ApiParam(value = "회사", required = true) @RequestParam String organization) {
         return name+ " " + email + " " + organization;
     }
 
