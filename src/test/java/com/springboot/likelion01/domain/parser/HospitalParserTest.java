@@ -1,6 +1,8 @@
 package com.springboot.likelion01.domain.parser;
 
+import com.springboot.likelion01.dao.HospitalDao;
 import com.springboot.likelion01.domain.Hospital;
+import com.springboot.likelion01.service.HospitalService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +14,34 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest
 class HospitalParserTest {
-    String line1 = "\"1\",\"의원\",\"01_01_02_P\",\"3620000\",\"PHMA119993620020041100004\",\"19990612\",\"\",\"01\",\"영업/정상\",\"13\",\"영업중\",\"\",\"\",\"\",\"\",\"062-515-2875\",\"\",\"500881\",\"광주광역시 북구 풍향동 565번지 4호 3층\",\"광주광역시 북구 동문대로 24, 3층 (풍향동)\",\"61205\",\"효치과의원\",\"20211115113642\",\"U\",\"2021-11-17 02:40:00.0\",\"치과의원\",\"192630.735112\",\"185314.617632\",\"치과의원\",\"1\",\"0\",\"0\",\"52.29\",\"401\",\"치과\",\"\",\"\",\"\",\"0\",\"0\",\"\",\"\",\"0\",\"\",";
 
     @Autowired
     ReadLineContext<Hospital> hospitalReadLineContext;
 
+    @Autowired
+    HospitalDao hospitalDao;
+
+    @Autowired
+    HospitalService hospitalService;
+
+    String line1 = "\"1\",\"의원\",\"01_01_02_P\",\"3620000\",\"PHMA119993620020041100004\",\"19990612\",\"\",\"01\",\"영업/정상\",\"13\",\"영업중\",\"\",\"\",\"\",\"\",\"062-515-2875\",\"\",\"500881\",\"광주광역시 북구 풍향동 565번지 4호 3층\",\"광주광역시 북구 동문대로 24, 3층 (풍향동)\",\"61205\",\"효치과의원\",\"20211115113642\",\"U\",\"2021-11-17 02:40:00.0\",\"치과의원\",\"192630.735112\",\"185314.617632\",\"치과의원\",\"1\",\"0\",\"0\",\"52.29\",\"401\",\"치과\",\"\",\"\",\"\",\"0\",\"0\",\"\",\"\",\"0\",\"\",";
+
+    @Test
+    @DisplayName("insert all test")
+    void insertAll() throws IOException {
+        hospitalDao.deleteAll();
+        String filename = "C:\\Users\\sj980\\Downloads\\utf8_fulldata_01_01_02_P_의원.csv";
+        int cnt = hospitalService.insertLargeVolumeHospitalData(filename);
+        assertTrue(cnt > 10000);
+        System.out.printf("파싱된 데이터 개수: %d", cnt);
+    }
+
     @Test
     void name() throws IOException {
-        String fileName = "C:\\Users\\user\\Downloads\\utf8_fulldata_01_01_02_P_의원.csv";
+        String fileName = "C:\\Users\\sj980\\Downloads\\utf8_fulldata_01_01_02_P_의원.csv";
         List<Hospital> hospitalList = hospitalReadLineContext.readByLine(fileName);
         assertTrue(hospitalList.size() > 1000);
         assertTrue(hospitalList.size() > 10000);
