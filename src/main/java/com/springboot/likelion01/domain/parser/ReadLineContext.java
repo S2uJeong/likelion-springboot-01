@@ -24,7 +24,7 @@ public class ReadLineContext<T> {
             try {
                 result.add(parser.parse(str));
             } catch (Exception e) {
-                System.out.printf("파싱중 에러가 발생해서 이 라인은 넘겨갑니다. 파일 내용 : %s",str.substring(20));
+                System.out.printf("파싱중 에러가 발생해서 이 라인은 넘겨갑니다. 파일내용:{}", str.substring(0, 50));
             }
         }
         reader.close();

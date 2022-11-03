@@ -29,27 +29,9 @@ class HospitalParserTest {
 
     String line1 = "\"1\",\"의원\",\"01_01_02_P\",\"3620000\",\"PHMA119993620020041100004\",\"19990612\",\"\",\"01\",\"영업/정상\",\"13\",\"영업중\",\"\",\"\",\"\",\"\",\"062-515-2875\",\"\",\"500881\",\"광주광역시 북구 풍향동 565번지 4호 3층\",\"광주광역시 북구 동문대로 24, 3층 (풍향동)\",\"61205\",\"효치과의원\",\"20211115113642\",\"U\",\"2021-11-17 02:40:00.0\",\"치과의원\",\"192630.735112\",\"185314.617632\",\"치과의원\",\"1\",\"0\",\"0\",\"52.29\",\"401\",\"치과\",\"\",\"\",\"\",\"0\",\"0\",\"\",\"\",\"0\",\"\",";
 
-    @Test
-    @DisplayName("insert all test")
-    void insertAll() throws IOException {
-        hospitalDao.deleteAll();
-        String filename = "C:\\Users\\sj980\\Downloads\\utf8_fulldata_01_01_02_P_의원.csv";
-        int cnt = hospitalService.insertLargeVolumeHospitalData(filename);
-        assertTrue(cnt > 10000);
-        System.out.printf("파싱된 데이터 개수: %d", cnt);
-    }
 
     @Test
-    void name() throws IOException {
-        String fileName = "C:\\Users\\sj980\\Downloads\\utf8_fulldata_01_01_02_P_의원.csv";
-        List<Hospital> hospitalList = hospitalReadLineContext.readByLine(fileName);
-        assertTrue(hospitalList.size() > 1000);
-        assertTrue(hospitalList.size() > 10000);
-        System.out.printf("파싱된 데이터 개수:%d", hospitalList.size());
-    }
-
-    @Test
-    @DisplayName("parsing ok ?")
+    @DisplayName("1line parsing ok ?")
     public void test() {
 
         HospitalParser hp = new HospitalParser();
@@ -73,6 +55,35 @@ class HospitalParserTest {
         assertEquals(52.29f, hospital.getTotalAreaSize()); //col 33
 
     }
+
+    @Test
+    @DisplayName("all paring test")
+    void ReadByLine() throws IOException {
+        String filename = "C:\\Users\\sj980\\Downloads\\utf8_fulldata_01_01_02_P_의원.csv";
+        List<Hospital> hospitals = hospitalReadLineContext.readByLine(filename);
+        assertTrue(hospitals.size() > 10000);
+    }
+
+    @Test
+    @DisplayName("insert line test")
+    void insertByLine() {
+        HospitalParser hp = new HospitalParser();
+        Hospital hospital = hp.parse(line1);
+        hospitalDao.add(hospital);
+        assertEquals(1, hospitalDao.getCount());
+    }
+
+    @Test
+    @DisplayName("insert all test")
+    void insertAll() throws IOException {
+        hospitalDao.deleteAll();
+        String filename = "C:\\Users\\sj980\\Downloads\\utf8_fulldata_01_01_02_P_의원.csv";
+        int cnt = this.hospitalService.insertLargeVolumeHospitalData(filename);
+        assertTrue(cnt > 1000);
+        assertTrue(cnt > 10000);
+        System.out.printf("파싱된 데이터 개수: %d %n", cnt);
+    }
+
 
 }
 
